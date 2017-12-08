@@ -158,3 +158,337 @@
       height:460,
       playDru:1000
     });
+
+$("#signup").click(function() {
+  $("#sign").css({"display":"block"})
+})
+$("#div1").click(function() {
+  $("#sign").css({"display":"none"})
+})
+  function show(obj){
+      obj.style.display = "block";
+    }
+    function hide(obj){
+      obj.style.display = "none";
+    }
+    function getLength(str){
+      return str.replace(/[\u4e00-\u9fa5]/g,"ok").length;
+    }
+    function setCancel(oInput,oSpan){
+      if(oInput.value.length > 0){
+          show(oSpan);
+        }else{
+          hide(oSpan);
+        }
+    }
+    window.onload = function(){
+      //获取用户表单元素
+      var bUserflag = false;
+      var bPhoneflag = false;
+      var bCodeflag = false;
+      var bPwflag = false;
+      var oFrom = document.forms[0];
+      var oDiv1 = document.getElementById("userinput");
+      var aDiv = oDiv1.getElementsByTagName("span");
+      var oUserinput = oFrom[0];
+      // console.log(oUserinput);
+      
+      //获取手机表单元素
+      var oPhoneinput = oFrom[1];
+      // console.log(oPhoneinput);
+      var oDiv2 = document.getElementById("phoneinput");
+      var aDiv2 = oDiv2.getElementsByTagName("span");
+
+      //获取验证码表单元素
+      var oCodeinput = oFrom[2];
+      // console.log(codeinput);
+      var oDiv3 = document.getElementById("codeinput");
+      var aDiv3 = oDiv3.getElementsByTagName("span");
+      
+      //获取密码表单元素
+      var oPwinput = oFrom[3];
+        // console.log(oPwinput);
+      var oDiv4 = document.getElementById("pwinput");
+      var oUl = document.getElementById("ul2");
+      var aDiv4 = oDiv4.getElementsByTagName("span");
+      var aLi = oUl.getElementsByTagName("li");
+      var bPwd1 = false;
+      var bPwd2 = false;
+      var bPwd3 = false;
+      // console.log(aLi[1]);
+
+      var oBtn = document.getElementById("register");
+      //用户输入
+      oUserinput.focus();
+
+      oUserinput.onkeyup = function(){
+        setCancel(oUserinput,aDiv[0]);
+      }
+      aDiv[0].onclick = function(){
+        oUserinput.value = "";  
+        hide(aDiv[1]);
+        hide(aDiv[2]);
+        show(aDiv[3]);
+        oUserinput.focus();
+      }
+
+      //验证用户名
+      oUserinput.onblur = function(){
+
+        hide(aDiv[1]);
+        hide(aDiv[2]);
+        hide(aDiv[3]);
+
+        var sVal = oUserinput.value;
+        var reg1 = /[a-z\u4e00-\u9fa50-9_]+/g;
+        var reg2 = /^[0-9]+$/g;
+        //用户名不能超过7个汉字或14个字符
+        if(sVal == ""){
+          bUserflag = false;
+        }else if(getLength(oUserinput.value) > 14){
+          show(aDiv[2]);
+          aDiv[2].innerHTML = "用户名不能超过7个汉字或14个字符";
+        }
+        //用户名仅支持中英文、数字或下划线，且不能为纯数字
+        else if(!reg1.test(sVal) || reg2.test(sVal)){
+          show(aDiv[2]);
+          aDiv[2].innerHTML = "用户名仅支持中英文、数字或下划线，且不能为纯数字";
+        }
+        else{
+          ajax(   //?
+            'http://127.0.0.1:3000/checkData?username='+sVal,
+            function(str){
+              var bCanReg = eval(str);
+              if(bCanReg){
+                show(aDiv[1]);
+                bUserflag = true;
+              }else{
+                show(aDiv[2]);
+                aDiv[2].innerHTML = "此用户名太受欢迎，请更换一个";
+              }
+            },
+            function(str){
+              console.log("err:"+str) 
+            }
+          );
+        }
+      }
+      
+      oUserinput.onfocus = function(){
+        hide(aDiv[1]);
+        hide(aDiv[2]);
+        show(aDiv[3]);
+      }
+
+
+      //手机号验证
+      //取消按钮
+      oPhoneinput.onkeyup = function(){
+        setCancel(oPhoneinput,aDiv2[0]);
+      }
+
+      //取消操作
+      aDiv2[0].onclick = function(){
+        oPhoneinput.value = ""; 
+        hide(aDiv2[0]);
+        hide(aDiv2[1]);
+        show(aDiv2[2]);
+        oPhoneinput.focus();
+      }
+
+      //限制手机位数
+      oPhoneinput.onkeydown = function(ev){
+        var oEvent = ev || event;
+
+        if(oPhoneinput.value.length > 10 && oEvent.keyCode !=8 &&oEvent.keyCode !=37 && oEvent.keyCode!=39){
+          return false;
+        }
+      }
+      //验证
+      oPhoneinput.onblur = function(){
+        hide(aDiv2[1]);
+        hide(aDiv2[2]);
+        hide(aDiv2[3]);
+
+        var sVal = oPhoneinput.value;
+        var reg = /1[3578][\d]{9}/g;
+        //用户名不能超过7个汉字或14个字符
+        if(sVal == ""){
+          bPhoneflag = false;
+        }
+        else if(!reg.test(sVal)){
+          show(aDiv2[2]);
+          aDiv2[2].innerHTML = "手机号码格式不正确";
+          bPhoneflag = false;
+        }else{
+          //此处省略ajax
+          show(aDiv2[1]);
+          bPhoneflag = true;
+        }     
+      }
+      //当得到焦点时显示的信息
+      oPhoneinput.onfocus = function(){
+        hide(aDiv2[1]);
+        hide(aDiv2[2]);
+        show(aDiv2[3]);
+      }
+      //验证码验证
+
+      oCodeinput.onkeyup = function(){
+        setCancel(oCodeinput,aDiv3[0]);
+      }
+
+      //取消操作
+      aDiv3[0].onclick = function(){
+        oCodeinput.value = "";  
+        hide(aDiv3[0]);
+        hide(aDiv3[1]);
+        show(aDiv3[2]);
+        oCodeinput.focus();
+
+        bCodeflag = false;
+      }
+
+      //限制手机位数
+      oCodeinput.onkeydown = function(ev){
+        var oEvent = ev || event;
+
+        if(oCodeinput.value.length > 5 && oEvent.keyCode !=8 &&oEvent.keyCode !=37 && oEvent.keyCode!=39){
+          return false;
+        }
+      }
+      //验证
+      oCodeinput.onblur = function(){
+        hide(aDiv3[1]);
+        hide(aDiv3[2]);
+
+        var sVal = oCodeinput.value;
+        var reg = /\d{6}/g;
+
+        if(sVal == ""){
+          bCodeflag = false;
+        }
+        else if(!reg.test(sVal)){
+          show(aDiv3[2]);
+          bCodeflag = false;
+        }else{
+          show(aDiv3[1]);
+          bCodeflag = true;
+        }     
+      }
+      //当得到焦点时显示的信息
+      oCodeinput.onfocus = function(){
+        hide(aDiv3[1]);
+        hide(aDiv3[2])
+      }
+
+      //密码验证
+
+
+      oPwinput.onkeyup = function(){
+        setCancel(oPwinput,aDiv4[0]);
+
+        var sSuc = "li1 li1_suc";
+        var sErr = "li1 li1_err";
+        var sVal = oPwinput.value;
+        var reg1 = /[\da-z\~\`\!\@\#\$\%\^\&\*\(\)\_\-\=\+\[\]\{\}\|\\\,\<\.\>\/\?\;\'\:\"]+/ig;
+        var reg2 = /\s/g;
+
+        //长度为6-14个字符
+        if(sVal.length >= 6 && sVal.length <=14){
+          aLi[0].className = sSuc;
+          bPwd1 = true;
+        }else{
+          aLi[0].className = sErr;
+        }
+        //支持数字大小写字母和标点符号
+        if(reg1.test(sVal)){
+          aLi[1].className = sSuc;
+          bPwd2 = true;
+        }else{
+          aLi[1].className = sErr;
+        }
+        //不允许有空格
+        if(!reg2.test(sVal)){
+          aLi[2].className = sSuc;
+          bPwd3 = true;
+        }else{
+          aLi[2].className = sErr;
+        }
+      }
+      
+      //取消操作
+      aDiv4[0].onclick = function(){
+        oPwinput.value = "";
+
+        hide(aDiv4[0]);
+        hide(aDiv4[1]);
+        hide(aDiv4[2]);
+
+        bPwd1 = false;
+        bPwd2 = false;
+        bPwd3 = false;
+        bPwflag = false;
+        for(var i=0;i<aLi.length-1;i++){
+          aLi[i].className = "li1";
+        }
+        show(oUl);
+        oPwinput.focus();
+      }
+      
+      //得到隐藏焦点信息
+      oPwinput.onfocus = function(){
+        show(oUl);
+        hide(aDiv4[1]);
+        hide(aDiv4[2]);
+        if(bPwd1 && bPwd2 &&bPwd3){
+          for(var i=0;i<aLi.length-1;i++){
+          aLi[i].className = "li1_suc";
+          }
+        }else{
+          bPwflag = false;
+        }
+        
+      }
+
+      //失去焦点时
+      oPwinput.onblur = function(){
+
+        if(bPwd1 && bPwd2 && bPwd3){  
+          hide(oUl);
+          show(aDiv4[1]);
+          bPwflag = true;
+        }else{
+          bPwflag = false;
+        }
+        if(oPwinput.value == ""){
+          hide(oUl);
+          bPwflag = false;
+        }
+      }
+      oBtn.onclick = function(){
+        if(oUserinput.value == ""){
+          show(aDiv[2]);
+          aDiv[2].innerHTML = "请您输入用户名";
+          bUserflag = false;
+        }
+        if(oPhoneinput.value == ""){
+          show(aDiv2[2]);
+          aDiv2[2].innerHTML = "请您输入手机号";
+          bPhoneflag = false;
+        }
+        if(oCodeinput.value == ""){
+          show(aDiv3[2]);
+          aDiv3[2].innerHTML = "请您输入验证码";
+          bCodeflag = false;
+        }
+        if(oPwinput.value == ""){
+          show(aDiv4[2]);
+          aDiv4[2].innerHTML = "请您输入密码";
+          bPwflag = false;
+        }
+        if(bUserflag && bPhoneflag && oCodeinput && oPwinput){
+          oFrom.submit();
+        }
+      }
+    }

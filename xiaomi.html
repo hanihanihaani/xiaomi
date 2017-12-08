@@ -32,9 +32,49 @@
 		<div class="user">
 			<ul>
 				<li><a href="#">登录</a><span>|</span></li>
-				<li><a href="#">注册</a><span>|</span></li>
+				<li><a href="#" id="signup">注册</a><span>|</span></li>
 				<li><a href="#">消息通知</a><span>|</span></li>
 			</ul>
+			<div id="sign">
+				<div id="div1">
+		<form action="http://www.liyuit.com" id="form">
+			<div id="userinput">
+				用户名 <input type="text" placeholder="请设置用户名" id="username" name="username">
+						<span class="cancel">×</span>
+						<span class="ok"></span>
+						<span class="err"></span>
+						<span class="defalut">设置后不可更改<br>
+						中英文均可，最长14个英文或7个汉字</span>
+			</div>
+			<div id="phoneinput">
+				手机号 <input type="text" placeholder="可用于登录和找回密码" id="phone" name="phone">
+						<span class="cancel">×</span>
+						<span class="ok"></span>
+						<span class="err"></span>
+						<span class="telphone">请输入中国大陆手机号，其他用户不可见</span>
+			</div>
+			<div id="codeinput">
+				验证码 <input type="text" placeholder="请输入验证码" id="code">
+						<span class="cancel">×</span>
+						<span class="ok"></span>
+						<span class="err"></span>
+			</div>
+			<div id="pwinput">
+				密码 <input type="text" placeholder="请设置登录密码" id="password">
+					 <span class="cancel">×</span>
+					 <span class="ok"></span>
+					 <span class="err"></span>
+					 <ul class="ul1" id="ul2">
+					 	<li class="li1">长度为6~14个字符</li>
+					 	<li class="li1">支持数字，大小写字母和标点符号</li>
+					 	<li class="li1">不允许有空格</li>
+					 	<li></li>
+					 </ul>
+			</div>
+			<div id="register">注册</div>
+		</form>
+	</div>
+			</div>
 		</div>
 		</div>
 	</div>
@@ -353,6 +393,9 @@
 		<div class="link-bottom">探索黑科技，小米为发烧而生！</div>
 	</div>
 	<script src="scripts/运动.js"></script>
+	<script src="scripts/jquery-3.2.1.js"></script>
+	<script src="scripts/lQuery-1.0.3.js"></script>
+	<script src="scripts/ajax.js"></script>
 	<script src="scripts/index.js"></script>
 </body>
 </html>
