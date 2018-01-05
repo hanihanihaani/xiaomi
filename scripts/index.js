@@ -162,9 +162,6 @@
 $("#signup").click(function() {
   $("#sign").css({"display":"block"})
 })
-$("#div1").click(function() {
-  $("#sign").css({"display":"none"})
-})
   function show(obj){
       obj.style.display = "block";
     }
