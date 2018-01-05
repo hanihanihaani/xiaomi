@@ -148,11 +148,11 @@
     new Carsole({
       id:"a-img",
       aImg:[
-      "images/c_1.jpg",
-      "images/c_2.jpg",
-      "images/c_3.jpg",
-      "images/c_4.jpg",
-      "images/c_5.jpg",
+      "images/c1.jpg",
+      "images/c2.jpg",
+      "images/c3.jpg",
+      "images/c4.jpg",
+      "images/c5.jpg",
       ],
       width:1226,
       height:460,
